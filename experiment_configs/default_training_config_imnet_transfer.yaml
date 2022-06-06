@@ -1,0 +1,249 @@
+
+# ------------------------------------------------------------------------------
+#                           NEEDS TO BE SPECIFIED
+# ------------------------------------------------------------------------------
+# path to dataset
+data_dir: needs_to_be_specified
+# path to output folder (default: none, current dir)
+output: needs_to_be_specified
+# Name of model to train 
+model: needs_to_be_specified
+
+# ------------------------------------------------------------------------------
+#                           FREQUENTLY CHANGED
+# ------------------------------------------------------------------------------
+# input batch size for training 
+batch_size: 128
+# ratio of validation batch size to training batch size (default: 1)
+validation_batch_size_multiplier: 4  
+
+# Optimizer 
+opt: adamw
+# weight decay 
+weight_decay: 0.05
+# Clip gradient norm (default: None, no clipping)
+clip_grad: null
+# Gradient clipping mode. One of ("norm", "value", "agc")
+clip_mode: norm  
+
+
+# number of epochs to train
+epochs: 20
+# learning rate
+lr: 0.00001 
+# epochs to warmup LR, if scheduler supports
+warmup_epochs: 0
+# warmup learning rate (default: 0.0001)
+warmup_lr: 0.00001
+# LR scheduler
+sched: cosine
+# lower lr bound for cyclic schedulers that hit 0 (1e-5)
+min_lr: 0.000001
+# epochs to cooldown LR at min_lr, after cyclic schedule ends
+cooldown_epochs: 0
+
+# ------------------- Dropout & stochastic depth -------------------
+# Dropout rate (default: 0.)
+drop: 0.0
+# Drop path rate (default: None)
+drop_path: 0.1
+# ------------------- Random augment -------------------
+# Use AutoAugment policy. "v0" or "original". (default: None)
+aa: rand-m9-mstd0.5-inc1  
+# ------------------- Mixup & Cutmix -------------------
+# mixup alpha, mixup enabled if > 0. (default: 0.)
+mixup: 0.8
+# cutmix alpha, cutmix enabled if > 0. (default: 0.)
+cutmix: 1.0
+# cutmix min/max ratio, overrides alpha and enables cutmix if set (default: None)
+cutmix_minmax: null
+# Probability of performing mixup or cutmix when either/both is enabled
+mixup_prob: 1.0
+# Probability of switching to cutmix when both mixup and cutmix enabled
+mixup_switch_prob: 0.5
+# How to apply mixup/cutmix params. Per "batch", "pair", or "elem"
+mixup_mode: batch
+# Turn off mixup after this epoch, disabled if 0 (default: 0)
+mixup_off_epoch: 0
+# ------------------- Erasing -------------------
+# Random erase prob (default: 0.)
+reprob: 0.25
+# Random erase mode (default: "const")
+remode: pixel
+# Random erase count (default: 1)
+recount: 1
+# Do not random erase first (clean) augmentation split
+resplit: false
+# ------------------- Label smoothing -------------------
+# Label smoothing (default: 0.1)
+smoothing: 0.1
+
+
+# random seed (default: 42)
+seed: 0
+# how many batches to wait before logging training status
+log_interval: 50  
+# number of checkpoints to keep (default: 3)
+checkpoint_hist: 1  
+# how many training processes to use (default: 1)
+workers: 8
+# Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.
+pin_mem: true
+# use the multi-epochs-loader to save time at the beginning of every epoch
+use_multi_epochs_loader: false  
+
+# Wandb logging
+log_wandb: true 
+
+# ------------------------------------------------------------------------------
+#                       Dataset / Model parameters
+# ------------------------------------------------------------------------------
+# dataset type (default: ImageFolder/ImageTar if empty)
+dataset: ''  
+# dataset train split (default: train)
+train_split: train  
+# dataset validation split (default: validation)
+val_split: validation  
+# Start with pretrained version of specified network (if avail)
+pretrained: false
+# Initialize model from this checkpoint (default: none)
+initial_checkpoint: ''  
+# Resume full model and optimizer state from checkpoint (default: none)
+resume: ''
+# prevent resume of optimizer state when resuming model
+no_resume_opt: false  
+# number of label classes (Model default if None)
+num_classes: null  
+# Global pool type, one of (fast, avg, max, avgmax, avgmaxc). Model default if None.
+gp: null  
+# Image patch size (default: None => model default)
+img_size: null  
+# Input all image dimensions (d h w, e.g. --input-size 3 224 224), uses model default if empty
+input_size: null  
+# Input image center crop percent (for validation only)
+crop_pct: null  
+# Override mean pixel value of dataset
+mean: null  
+# Override std deviation of of dataset
+std: null  
+# Image resize interpolation type (overrides model)
+interpolation: 'bicubic'  
+
+# ------------------------------------------------------------------------------
+#                         Optimizer parameters
+# ------------------------------------------------------------------------------
+# Optimizer Epsilon (default: None, use opt default)
+opt_eps: 1e-8 
+# Optimizer Betas (default: None, use opt default)
+opt_betas: null
+# Optimizer momentum (default: 0.9)
+momentum: 0.9
+
+# ------------------------------------------------------------------------------
+#                      Learning rate schedule parameters
+# ------------------------------------------------------------------------------
+# learning rate noise on/off epoch percentages
+lr_noise: null
+# learning rate noise limit percent (default: 0.67)
+lr_noise_pct: 0.67
+# learning rate noise std-dev (default: 1.0)
+lr_noise_std: 1.0
+# learning rate cycle len multiplier (default: 1.0)
+lr_cycle_mul: 1.0 
+# learning rate cycle limit
+lr_cycle_limit: 1 
+# epoch repeat multiplier (number of times to repeat dataset epoch per train epoch).
+epoch_repeats: 0.0 
+# manual epoch number (useful on restarts)
+start_epoch: null
+# epoch interval to decay LR
+decay_epochs: 30
+# patience epochs for Plateau LR scheduler (default: 10'
+patience_epochs: 10
+# LR decay rate (default: 0.1)
+decay_rate: 0.1
+
+# ------------------------------------------------------------------------------
+#                 Augmentation & regularization parameters
+# ------------------------------------------------------------------------------
+# Disable all training augmentation, override other train aug args
+no_aug: false
+# Random resize scale (default: 0.08 1.0)
+scale:
+- 0.08
+- 1.0
+# Random resize aspect ratio (default: 0.75 1.33)
+ratio:
+- 0.75
+- 1.3333333333333333
+# Horizontal flip training aug probability
+hflip: 0.5
+# Vertical flip training aug probability
+vflip: 0.0
+# Color jitter factor (default: 0.4)
+color_jitter: 0.4  
+# Number of augmentation splits (default: 0, valid: 0 or >=2)
+aug_splits: 0
+# Enable Jensen-Shannon Divergence + CE loss. Use with `--aug-splits`.
+jsd: false
+# Training interpolation (random, bilinear, bicubic default: "random")
+train_interpolation: bicubic
+# Drop connect rate, DEPRECATED, use drop-path (default: None)
+drop_connect: null
+# Drop block rate (default: None)
+drop_block: null
+
+# ------------------------------------------------------------------------------
+#  Batch norm parameters (only works with gen_efficientnet based models currently)
+# ------------------------------------------------------------------------------
+# Use Tensorflow BatchNorm defaults for models that support it (default: False)
+bn_tf: false 
+# BatchNorm momentum override (if not None)
+bn_momentum: null 
+# BatchNorm epsilon override (if not None)
+bn_eps: null   
+# Enable NVIDIA Apex or Torch synchronized BatchNorm.
+sync_bn: false 
+# 'Distribute BatchNorm stats between nodes after each epoch ("broadcast", "reduce", or "")
+dist_bn: '' 
+# Enable separate BN layers per augmentation split.
+split_bn: false 
+
+# ------------------------------------------------------------------------------
+#                     Model Exponential Moving Average
+# ------------------------------------------------------------------------------
+# Enable tracking moving average of model weights
+model_ema: false 
+# Force ema to be tracked on CPU, rank=0 node only. Disables EMA validation.
+model_ema_force_cpu: false
+# decay factor for model weights moving average (default: 0.9998)
+model_ema_decay: 0.99996
+
+# ------------------------------------------------------------------------------
+#                                  Misc
+# ------------------------------------------------------------------------------
+# how many batches to wait before writing recovery checkpoint
+recovery_interval: 0
+# save images of input bathes every log interval for debugging
+save_images: false
+# use NVIDIA Apex AMP or Native AMP for mixed precision training
+amp: false
+# Use NVIDIA Apex AMP mixed precision
+apex_amp: false
+# Use Native Torch AMP mixed precision
+native_amp: false
+# Use channels_last memory layout
+channels_last: false
+# disable fast prefetcher
+no_prefetcher: false
+# name of train experiment, name of sub-folder for output
+experiment: ''
+# Best metric (default: "top1"
+eval_metric: top1
+# Test/inference time augmentation (oversampling) factor. 0=None (default: 0)
+tta: 0
+# local rank
+local_rank: 0
+# convert model torchscript for inference
+torchscript: false
+
